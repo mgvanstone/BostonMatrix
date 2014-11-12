@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+body {
+	margin: 0px;
+	padding: 0px;
+}
+</style>
+<title>Boston Matrix</title>
+</head>
+<body>
+	<h1>Boston Matrix</h1>
+	<canvas id="myCanvas" width="850" height="750"></canvas>
+	<div>
+	<form method="get">
+		<textarea id="lname" rows="10" col="300">
+Risk 1,300,450
+Risk 2,650,150
+Risk 3,300,150
+Risk 4,580,450
+Risk 5,650,450
+</textarea>
+		<br>
+		<button type="button" onclick="load()">Load</button>
+		<button type="button" onclick="clear1()">Clear</button>		
+	</form>
+	</div>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script>
+		var context;
+
+		function load() {
+			setup();
+			var data1 = $("#lname").val();
+			var splitlines = data1.split("\n");
+			var Xpos = 0;
+			var Ypos = 0;
+
+			for (var n = 0; n < splitlines.length - 1; n++) {
+				var linevals = splitlines[n].split(",");
+				addCircle(context, linevals[1], linevals[2], linevals[0], blue);
+			}
+			//addCircle(context, 400, 150, "Risk 3", blue);			
+		}
+		function addCircle(context, centerX, centerY, txt, color) {
+
+			context.save();
+			var radius = 30;
+			//console.log(txt);
+			context.beginPath();
+			context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+			context.fillStyle = color;
+			context.strokeStyle = color;
+			context.setLineDash([ 0 ]);
+			context.fill();
+			context.lineWidth = 2;
+			context.stroke();
+
+			context.font = 'italic 12pt Calibri';
+			context.fillStyle = 'black';
+			context.fillText(txt, Number(centerX) - 20, Number(centerY) + 5);
+			
+		      context.shadowColor = '#999';
+		      context.shadowBlur = 2;
+		      context.shadowOffsetX = 3;
+		      context.shadowOffsetY = 3;	
+		      	
+		      context.restore();		      
+		}
+		function clear1() {
+			//alert("hi");
+	        context.clearRect(0, 0, 850, 750);
+	        setup();
+		}
+		function setup() {	      
+			context.rect(100, 20, 700, 580);
+
+			context.save();
+			// add gradient
+			var grd = context
+					.createRadialGradient(138, 650, 175, 138, 650, 700);
+			// light blue
+			grd.addColorStop(0, green);
+			// dark blue
+			grd.addColorStop(1, red);
+			context.fillStyle = grd;
+			context.fill();
+			context.restore();
+
+			// x axis
+			context.beginPath();
+			context.moveTo(100, 20);
+			context.lineTo(100, 602);
+
+			// axis style
+			context.lineWidth = 5;
+			context.strokeStyle = 'black';
+			context.stroke();
+
+			// y axis
+			context.beginPath();
+			context.moveTo(100, 600);
+			context.lineTo(800, 600);
+
+			// axis style
+			context.lineWidth = 5;
+			context.strokeStyle = 'black';
+			context.stroke();
+
+			// text axis
+			context.font = 'italic 14pt Calibri';
+			context.strokeStyle = 'black';			
+			context.fillText('High', 50, 100);
+			context.fillText('Med', 50, 300);
+			context.fillText('Low', 50, 550);
+
+			// text axis
+			context.font = 'italic 14pt Calibri';
+			context.strokeStyle = 'black';			
+			context.fillText('Low', 150, 630);
+			context.fillText('Med', 450, 630);
+			context.fillText('High', 750, 630);
+
+			// Right Aligned
+			context.save();
+			context.translate(20, 350);
+			context.rotate(-Math.PI / 2);
+
+			context.fillStyle = '#707B7B';
+			context.font = 'italic 16pt Calibri';			
+			context.fillText('Likelihood', 0, 15 / 2);
+			context.restore();
+			context.save();
+			context.fillStyle = '#707B7B';
+			context.fillText('Impact', 450, 675);
+
+			// x axis
+			context.beginPath();
+			context.moveTo(450, 20);
+			context.lineTo(450, 602);
+
+			// axis style
+			context.lineWidth = 2;
+			context.strokeStyle = 'black';
+			context.setLineDash([ 5 ]);
+			context.stroke();
+
+			// y axis
+			context.beginPath();
+			context.moveTo(100, 300);
+			context.lineTo(800, 300);
+
+			// axis style
+			context.lineWidth = 2;
+			context.strokeStyle = 'black';
+			context.setLineDash([ 5 ]);
+			context.stroke();
+			context.restore();			
+		}
+		
+		var green = '#A3D55D';
+		var grey = '#707B7B';
+		var red = '#F54245';
+		var blue = '#009ADD';
+		var orange = '#FF9E15';
+		
+		var canvas = document.getElementById('myCanvas');
+		context = canvas.getContext('2d');
+		setup();
+
+
+	</script>
+</body>
+</html>
